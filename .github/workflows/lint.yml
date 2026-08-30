@@ -1,0 +1,90 @@
+name: Lint
+
+# Path-filtered: this workflow stays quiet until there are Dockerfiles or shell
+# scripts to check. That also means it does not always report a status, so it is
+# deliberately NOT a required check in the branch ruleset - see guard.yml.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/Dockerfile'
+      - '**/Dockerfile.*'
+      - '**/*.sh'
+      - '.hadolint.yaml'
+      - '.shellcheckrc'
+      - '.github/workflows/lint.yml'
+  push:
+    branches: [main]
+    paths:
+      - '**/Dockerfile'
+      - '**/Dockerfile.*'
+      - '**/*.sh'
+      - '.hadolint.yaml'
+      - '.shellcheckrc'
+      - '.github/workflows/lint.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: Shell scripts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check Bash syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r script; do
+            echo "==> bash -n ${script}"
+            bash -n "${script}"
+          done < <(git ls-files '*.sh')
+
+      - name: Run ShellCheck
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t scripts < <(git ls-files '*.sh')
+          if [ "${#scripts[@]}" -eq 0 ]; then
+            echo "No shell scripts tracked yet - nothing to check."
+            exit 0
+          fi
+
+          # shellcheck is preinstalled on the ubuntu-latest runner.
+          shellcheck --version
+          shellcheck "${scripts[@]}"
+
+  hadolint:
+    name: Dockerfiles
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run hadolint
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t dockerfiles < <(git ls-files 'Dockerfile' '*/Dockerfile' 'Dockerfile.*' '*/Dockerfile.*')
+          if [ "${#dockerfiles[@]}" -eq 0 ]; then
+            echo "No Dockerfiles tracked yet - nothing to check."
+            exit 0
+          fi
+
+          status=0
+          for dockerfile in "${dockerfiles[@]}"; do
+            echo "==> hadolint ${dockerfile}"
+            docker run --rm -i -v "${PWD}/.hadolint.yaml:/.config/hadolint.yaml:ro" \
+              hadolint/hadolint:v2.12.0 hadolint - < "${dockerfile}" || status=1
+          done
+
+          exit "$status"

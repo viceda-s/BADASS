@@ -1,0 +1,217 @@
+# ============================================
+# Docker build artifacts and temporary files
+# ============================================
+*.tar
+*.tar.gz
+*.docker-image
+.docker/
+docker-builds/
+build/
+dist/
+
+# Docker intermediate layers
+.docker/
+
+# ============================================
+# GNS3 temporary and cache files
+# ============================================
+*.gns3p~
+*.gns3project~
+*.backup
+*~
+project-files/*.tmp
+project-files/*.log
+project-files/*.bak
+*.log
+logs/
+
+# GNS3 cache directories
+.cache/
+tmp/
+temp/
+
+# ============================================
+# Virtual machine and environment files
+# ============================================
+*.vmdk
+*.vdi
+*.qcow2
+*.ova
+*.ovf
+vm-snapshots/
+.snapshots/
+
+# VirtualBox
+*.vbox-prev
+
+# VMware
+*.vmem
+*.vmss
+*.vmsn
+
+# ============================================
+# IDE and editor files
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.project
+.settings/
+.classpath
+
+# ============================================
+# Python artifacts (if using Python scripts)
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+.eggs/
+
+# ============================================
+# Node.js (if using any JS tooling)
+# ============================================
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ============================================
+# CI/CD and build artifacts
+# ============================================
+artifacts/
+output/
+results/
+*.zip
+*.gz
+*.tar.gz
+!P1/*.zip
+!P2/*.zip
+!P3/*.zip
+
+# Allow ZIP exports in P1, P2, P3 folders but ignore others
+P1/*.tar
+P1/*.gz
+P2/*.tar
+P2/*.gz
+P3/*.tar
+P3/*.gz
+
+# ============================================
+# Sensitive information and credentials
+# ============================================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+credentials/
+.env
+.env.local
+.env.*.local
+*.secret
+*.credentials
+config-secrets.yml
+config-secrets.yaml
+
+# ============================================
+# Large binary files (optional - adjust as needed)
+# ============================================
+# Uncomment if you want to ignore large binaries
+# *.bin
+# *.iso
+# *.img
+
+# ============================================
+# Documentation build artifacts
+# ============================================
+docs/_build/
+docs/build/
+*.pdf
+!docs/*.pdf
+
+# ============================================
+# Test and coverage artifacts
+# ============================================
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.test-results/
+junit/
+
+# ============================================
+# OS-specific files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# ============================================
+# Keep these folders but ignore their contents
+# ============================================
+# Screenshots folder - keep folder, ignore large files
+screenshots/*.png
+screenshots/*.jpg
+screenshots/*.jpeg
+!screenshots/.gitkeep
+
+# Captures folder - keep folder, ignore large pcap files
+captures/*.pcap
+captures/*.pcapng
+!captures/.gitkeep
+
+# ============================================
+# Comments about what TO commit
+# ============================================
+# DO COMMIT:
+# - Dockerfiles (Dockerfile.host, Dockerfile.router)
+# - Entrypoint scripts (entrypoint-*.sh)
+# - Configuration files (with comments)
+# - GNS3 project files (.gns3project)
+# - Documentation (README.md, docs/*.md)
+# - Makefile and build scripts
+# - CI/CD workflows (.github/workflows/)
+# - This .gitignore file
+
+# DO NOT COMMIT:
+# - Built Docker images (export as ZIP in P1/P2/P3 folders instead)
+# - Large binary files
+# - Sensitive information
+# - Temporary and cache files
+# - IDE-specific configuration
+# - Personal VM snapshots
+# ============================================
+# Subject
+# ============================================
+# The subject PDF is kept locally, not tracked. Delete this line if the group
+# would rather have it in the repository.
+en.subject.BADASS.pdf
+
+# ============================================
+# Graded deliverables - never ignore these
+# ============================================
+# Negations guard against the broad archive and image patterns above. The
+# portable GNS3 exports bundle the base images, so a future rename to .zip or a
+# stray image tarball beside them could otherwise be silently dropped from a
+# commit and cost the deliverable.
+!P1/P1.gns3project
+!P2/P2.gns3project
+!P3/P3.gns3project
+!P1/**/Dockerfile*
+!P2/**/Dockerfile*
+!P3/**/Dockerfile*

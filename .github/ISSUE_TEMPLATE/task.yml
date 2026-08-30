@@ -1,0 +1,64 @@
+name: Task
+description: Implementation work for one of the mandatory parts
+title: "[Px] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One task = one deliverable that can be reviewed on its own.
+        If a task cannot be validated by a command or a capture, split it.
+
+  - type: dropdown
+    id: part
+    attributes:
+      label: Part
+      description: Which area of the repository this task lands in.
+      options:
+        - P1 - GNS3 configuration with Docker
+        - P2 - Discovering a VXLAN
+        - P3 - Discovering BGP with EVPN
+        - docs
+        - ci / tooling
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What needs to be built or changed, and why the subject requires it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: The conditions that make this task done. One checkbox per condition.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation
+      description: >
+        The commands or captures that prove this works. These are the same outputs
+        the pull request will have to carry. See CONTRIBUTING.md > Evidence.
+        For example: `docker build -t badass-router P1/router`,
+        `ip -d link show vxlan10`, `vtysh -c "show bgp l2vpn evpn"`.
+      render: shell
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: naming
+    attributes:
+      label: Subject constraints
+      options:
+        - label: Any equipment added by this task carries the group login in its name.
+        - label: No IP address is baked into a Docker image.
