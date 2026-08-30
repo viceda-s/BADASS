@@ -1,0 +1,68 @@
+name: Bug report
+description: A topology, container, or routing behaviour that does not work as expected
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: part
+    attributes:
+      label: Part affected
+      options:
+        - P1 - GNS3 configuration with Docker
+        - P2 - Discovering a VXLAN
+        - P3 - Discovering BGP with EVPN
+        - docs
+        - ci / tooling
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Where it breaks
+      description: Best guess. Narrows down who picks it up.
+      options:
+        - Docker image build
+        - Container boot / entrypoint
+        - GNS3 topology or link
+        - Bridge / VXLAN datapath
+        - OSPF underlay
+        - BGP EVPN control plane
+        - Other / unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Paste the real output, not a summary of it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        - Host OS / VM:
+        - GNS3 version:
+        - Docker version:
+        - FRR / Quagga version:
+    validations:
+      required: true

@@ -1,0 +1,10 @@
+# Force every issue through a template so the board stays consistent.
+blank_issues_enabled: false
+
+contact_links:
+  - name: BADASS subject (en.subject.BADASS.pdf)
+    url: https://github.com/viceda-s/BADASS/blob/main/README.md
+    about: Read the repository map and the subject requirements before opening an issue.
+  - name: Contributing guide
+    url: https://github.com/viceda-s/BADASS/blob/main/CONTRIBUTING.md
+    about: Branch naming, commit convention, and the evidence expected on a pull request.

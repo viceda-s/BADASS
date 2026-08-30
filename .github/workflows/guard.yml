@@ -1,0 +1,67 @@
+name: Repository guard
+
+# Runs on every pull request with no path filter, so it always reports a status.
+# This is the check that is safe to mark as required in the branch ruleset.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Subject layout and file sizes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Reject oversized files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # GitHub warns above 50 MB and refuses a push above 100 MB. The
+          # .gns3project exports bundle the Docker base images, so they are the
+          # realistic way to hit that ceiling. Fail early, while the file is
+          # still only in a branch, instead of on a rejected push to main.
+          warn_bytes=$((50 * 1024 * 1024))
+          fail_bytes=$((90 * 1024 * 1024))
+          status=0
+
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            size=$(stat -c %s "$file")
+            if [ "$size" -gt "$fail_bytes" ]; then
+              echo "::error file=${file}::$((size / 1024 / 1024)) MB exceeds the 90 MB limit. GitHub rejects files above 100 MB."
+              status=1
+            elif [ "$size" -gt "$warn_bytes" ]; then
+              echo "::warning file=${file}::$((size / 1024 / 1024)) MB is above GitHub's 50 MB warning threshold."
+            fi
+          done < <(git ls-files)
+
+          exit "$status"
+
+      - name: Check mandatory folder names
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # The subject requires the parts at the repository root, named exactly
+          # P1, P2 and P3. A lowercase folder is invisible to a case-sensitive
+          # checkout on the evaluator's machine and costs the deliverable.
+          status=0
+
+          for wrong in p1 p2 p3; do
+            if git ls-files --error-unmatch "${wrong}/" >/dev/null 2>&1; then
+              echo "::error::Found '${wrong}/' at the repository root. The subject requires '${wrong^^}/'."
+              status=1
+            fi
+          done
+
+          exit "$status"

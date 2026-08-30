@@ -1,0 +1,37 @@
+name: Documentation
+description: Missing, unclear, or outdated documentation and configuration comments
+title: "[DOCS] "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The subject requires configuration files **with comments explaining the setup
+        of each piece of equipment**, and the defence expects you to explain every term
+        used. Undocumented configuration is a real defect here, not a nice-to-have.
+
+  - type: dropdown
+    id: part
+    attributes:
+      label: Area
+      options:
+        - P1 - GNS3 configuration with Docker
+        - P2 - Discovering a VXLAN
+        - P3 - Discovering BGP with EVPN
+        - README / repository map
+        - CONTRIBUTING / workflow
+    validations:
+      required: true
+
+  - type: textarea
+    id: gap
+    attributes:
+      label: What is missing or wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed content
+      description: A sketch is enough. Terms that need defining, commands worth showing.

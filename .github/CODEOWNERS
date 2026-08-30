@@ -1,0 +1,19 @@
+# Code ownership for BADASS.
+# GitHub requests a review from the matching owner(s) automatically when a pull
+# request touches these paths, and the branch ruleset requires that review.
+# See: https://docs.github.com/articles/about-code-owners
+#
+# TODO: replace the two placeholder handles below with the real group members.
+# Until then, every path resolves to @viceda-s so the ruleset stays satisfiable.
+
+# Everything, unless a more specific rule below matches.
+*               @viceda-s
+
+/P1/            @viceda-s
+/P2/            @viceda-s
+/P3/            @viceda-s
+
+/docs/          @viceda-s
+
+# Repository tooling and workflow.
+/.github/       @viceda-s

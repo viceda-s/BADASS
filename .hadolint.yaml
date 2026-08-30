@@ -1,0 +1,9 @@
+failure-threshold: warning
+
+ignored:
+  # DL3018 (apk) and DL3008 (apt) demand pinned package versions. Alpine and
+  # Debian drop old versions from their repositories, which would break the
+  # image builds weeks after they were written - for a lab that has to rebuild
+  # reliably at defence time, that trade is not worth it.
+  - DL3018
+  - DL3008
